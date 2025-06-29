@@ -6,8 +6,10 @@ use App\Http\Controllers\dashboard\AdminDashboardController;
 use App\Http\Controllers\dashboard\BoDashboardController;
 use App\Http\Controllers\dashboard\CustomerDashboardController;
 use App\Http\Controllers\EducationController;
+use App\Http\Controllers\hologram\BoHologramController;
 use App\Http\Controllers\PricingController;
 use App\Http\Controllers\produk\BoProdukController;
+use App\Http\Controllers\token\CustomerTokenController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -49,6 +51,15 @@ Route::get('/', [AuthController::class,'login'])->name('login');
 Route::post('/authenticate', [AuthController::class,'authenticate'])->name('authenticate');
 Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
+// LOGIN CUSTOMER
+Route::get('/check-session/{kode}', [AuthController::class,'cekLogin'])->name('cek.session');
+Route::get('/login-customer/{kode}', [AuthController::class,'loginCustomer'])->name('login.customer');
+Route::post('/authenticate-customer/{kode}', [AuthController::class,'authenticateCustomer'])->name('authenticate.customer');
+
+// HOLOGRAM
+Route::get('/verifikasi/{kode}', [BoHologramController::class, 'verifikasi'])->name('hologram.verify');
+Route::post('/simpan-lokasi', [BoHologramController::class, 'simpanLokasi'])->name('hologram.location');
+
 Route::middleware(['auth'])->group(function () {
     
     
@@ -70,10 +81,24 @@ Route::middleware(['auth'])->group(function () {
 
         // BATCH PRODUK
         Route::get('/batch-produk/{id}', [BoBatchController::class, 'index'])->name('batch');
-    });
+        Route::post('/batch-produk/store', [BoBatchController::class, 'store'])->name('batch.store');
+        Route::put('/batch-produk/update/{id}', [BoBatchController::class, 'update'])->name('batch.update');
+        Route::delete('/batch-produk/delete/{id}', [BoBatchController::class, 'delete'])->name('batch.delete');
+        Route::get('/batch-produk/detail/{id}', [BoBatchController::class, 'detail'])->name('batch.detail');
 
-    Route::prefix('customer')->name('customer.')->middleware('CekUserLogin:3')->group(function () {
+        // HOLOGRAM
+        Route::get('/hologram/cetak/{id}', [BoHologramController::class, 'cetak'])->name('hologram.print');
+        
+
+    });
+    
+    Route::prefix('customer')->name('c.')->middleware('CekUserLogin:3')->group(function () {
         Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
+
+
+        Route::get('/token', [CustomerTokenController::class, 'index'])->name('token');
+        Route::get('/token/{kode}', [CustomerTokenController::class, 'indexWithCode'])->name('token.with.kode');
+        Route::post('/token/claim/{kode}', [CustomerTokenController::class, 'klaimToken'])->name('token.claim');
     });
 
 });

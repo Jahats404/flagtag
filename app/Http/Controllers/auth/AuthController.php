@@ -104,7 +104,7 @@ class AuthController extends Controller
                 return redirect()->route('bo.dashboard');
             }
             elseif ($user->role_id == '3') {
-                return redirect()->route('customer.dashboard');
+                return redirect()->route('c.dashboard');
             }
         }
 
@@ -115,6 +115,67 @@ class AuthController extends Controller
 
         return redirect()->back()->withErrors(['password' => 'Email atau Password salah.'])->withInput();
     }
+
+
+    
+    public function cekLogin($kode)
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login.customer', ['kode' => $kode])
+                ->with('error', 'Anda harus login terlebih dahulu untuk Klaim Token.');
+        } else {
+            return redirect()->route('c.token.with.kode', ['kode' => $kode]);
+        }
+    }
+
+    public function loginCustomer($kode)
+    {
+        return view('auth.login-customer', compact('kode'));
+    }
+
+    public function authenticateCustomer(Request $request, $kode)
+    {
+        $rules = [
+            'email' => 'required|email',
+            'password' => 'required',
+        ];
+        $messages = [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'password.required' => 'Password wajib diisi.',
+        ];
+        $validator = Validator::make($request->all(), $rules, $messages);
+        
+        if ($validator->fails()) {
+            return redirect()->route('login.customer',['kode' => $kode])->withErrors($validator)->withInput();
+        }
+        // Menyimpan input email ke dalam sesi
+        Session::flash('email', $request->input('email'));
+        
+        $credentials = $request->only('email', 'password');
+
+        // Mencoba otentikasi pengguna
+        if (Auth::attempt($credentials)) {
+
+            if (Auth::user()->role_id != '3') {
+                return redirect()->route('login.customer', ['kode' => $kode])
+                    ->with('error', 'Anda harus login sebagai Customer untuk Klaim Token.');
+            } else {
+                return redirect()->route('c.token.with.kode', ['kode' => $kode]);
+            }
+        }
+
+        $user = User::where('email', $request->email)->first();
+        if (!$user) {
+            return redirect()->back()->withErrors(['email' => 'Email tidak terdaftar.'])->withInput();
+        }
+
+        return redirect()->back()->withErrors(['password' => 'Email atau Password salah.'])->withInput();
+    }
+
+
+
+
 
     public function logout(Request $request)
     {

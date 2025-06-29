@@ -12,8 +12,8 @@
             <li class="sidebar-header">
                 Owner
             </li>
-            <li class="sidebar-item {{ Request::routeIs('dashboard*') ? 'active' : '' }}">
-                <a class="sidebar-link" href="{{ route('dashboard') }}">
+            <li class="sidebar-item {{ Request::routeIs('bo.dashboard*') ? 'active' : '' }}">
+                <a class="sidebar-link" href="{{ route('bo.dashboard') }}">
                     <i class="align-middle me-2 fas fa-fw fa-home"></i> <span class="align-middle">Dashboard</span>
                 </a>
             </li>
@@ -160,10 +160,44 @@
             </li> --}}
             @endif
 
+            @if (Auth::check() && Auth::user()->role_id == '3')
+                <li class="sidebar-header">
+                    Admin
+                </li>
+                <li class="sidebar-item {{ Request::routeIs('c.dashboard*') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('c.dashboard') }}">
+                        <i class="align-middle me-2 fas fa-fw fa-home"></i> <span class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+                <li class="sidebar-item {{ Request::routeIs('c.token*') || Request::routeIs('c.token*') ? 'active' : '' }}">
+                    <a data-bs-target="#tokens" data-bs-toggle="collapse" class="sidebar-link">
+                        <i class="align-middle me-2 fas fa-fw fa-smoking"></i> <span class="align-middle">Smoking Area</span>
+                    </a>
+                    <ul id="tokens" class="sidebar-dropdown list-unstyled collapse {{ Request::routeIs('c.token') || Request::routeIs('detail.produk') ? 'show' : '' }}" data-bs-parent="#sidebar">
+                        <li class="sidebar-item {{ Request::routeIs('c.token') || Request::routeIs('c.token.with.kode') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('c.token') }}">Token</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="sidebar-item {{ Request::routeIs('bo.produk*') || Request::routeIs('bo.produk*') ? 'active' : '' }}">
+                    <a data-bs-target="#produks" data-bs-toggle="collapse" class="sidebar-link">
+                        <i class="align-middle me-2" data-feather="box"></i> <span class="align-middle">Produk</span>
+                    </a>
+                    <ul id="produks" class="sidebar-dropdown list-unstyled collapse {{ Request::routeIs('bo.produk') || Request::routeIs('detail.produk') ? 'show' : '' }}" data-bs-parent="#sidebar">
+                        <li class="sidebar-item {{ Request::routeIs('bo.produk') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('bo.produk') }}">Data Produk</a>
+                        </li>
+                        <li class="sidebar-item {{ Request::routeIs('kepemilikan.produk') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('kepemilikan.produk') }}">Kepemilikan Produk</a>
+                        </li>
+                    </ul>
+                </li>
+            @endif
+
             <li class="sidebar-header">
                 Customer
             </li>
-
+                
             <li class="sidebar-item {{ Request::routeIs('data.riwayat*') ? 'active' : '' }}">
                 <a class="sidebar-link" href="{{ route('data.riwayat') }}">
                     <i class="ion ion-ios-bookmark me-2"></i> <span class="align-middle">Riwayat</span>

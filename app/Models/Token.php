@@ -16,17 +16,12 @@ class Token extends Model
         'id_token' => 'string',
     ];
 
-    public function batchProduk()
+    public function hologram()
     {
-        return $this->belongsTo(BatchProduk::class, 'batch_id', 'id_batch');
+        return $this->belongsTo(Hologram::class, 'hologram_id', 'id_hologram');
     }
-
-    public function userMinted()
+    public function customer()
     {
-        return $this->belongsTo(User::class, 'user_id_minted', 'id');
-    }
-    public function userClaimed()
-    {
-        return $this->belongsTo(User::class, 'user_id_claimed', 'id');
+        return $this->belongsTo(Customer::class, 'customer_claim_id', 'id_customer');
     }
 }

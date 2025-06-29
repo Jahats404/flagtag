@@ -14,16 +14,17 @@ return new class extends Migration
         Schema::create('hologram', function (Blueprint $table) {
             $table->string('id_hologram')->primary()->unique();
             $table->string('kode_hologram');
-            $table->text('hologram_image');
-            $table->string('status'); // 'active', 'inactive', 'claimed'
+            $table->text('hologram_image')->nullable();
+            $table->string('status')->default('Inactive'); // 'active', 'inactive', 'claimed'
+            $table->string('status_token')->nullable(); // 'active', 'inactive', 'claimed'
+            $table->text('lokasi_scan')->nullable();
             
             $table->string('batch_produk_id');
             $table->foreign('batch_produk_id')->references('id_batch_produk')->on('batch_produk')->onDelete('cascade');
             
-            $table->unsignedBigInteger('user_id_minted')->nullable();
-            $table->foreign('user_id_minted')->references('id')->on('users');
-            $table->unsignedBigInteger('user_id_claimed')->nullable();
-            $table->foreign('user_id_claimed')->references('id')->on('users');
+            $table->string('customer_claim_id')->nullable();
+            $table->foreign('customer_claim_id')->references('id_customer')->on('customer')->onDelete('cascade');
+            
             $table->timestamps();
         });
     }

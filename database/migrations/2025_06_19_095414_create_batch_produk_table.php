@@ -17,8 +17,9 @@ return new class extends Migration
             $table->date('tanggal_produksi');
             $table->date('tanggal_kadaluarsa');
             $table->string('tempat_produksi');
-            $table->string('qty');
-            $table->string('status');
+            $table->string('quantity');
+            $table->string('status')->nullable()->default('Pending');
+            $table->integer('nominal_token')->nullable();
 
             $table->string('produk_id');
             $table->foreign('produk_id')->references('id_produk')->on('produk')->onDelete('cascade');

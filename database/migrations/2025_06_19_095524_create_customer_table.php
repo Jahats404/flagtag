@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('customer', function (Blueprint $table) {
             $table->string('id_customer')->primary()->unique();
-            $table->string('nama_lengkap');
+            $table->string('nama_lengkap')->nullable();
             
             $table->unsignedBigInteger('user_id')->unique();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

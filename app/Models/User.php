@@ -54,6 +54,11 @@ class User extends Authenticatable
         return $this->hasOne(BrandOwner::class, 'user_id', 'id');
     }
 
+    public function customer()
+    {
+        return $this->hasOne(Customer::class, 'user_id', 'id');
+    }
+
     public function tokenMinted()
     {
         return $this->hasMany(Token::class, 'user_id_minted', 'id');

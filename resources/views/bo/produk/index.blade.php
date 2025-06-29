@@ -127,9 +127,9 @@
                                                             <i class="ion ion-ios-filing me-2"></i> Batch
                                                         </a>
                                                         <!-- Tombol Detail -->
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id_produk }}">
+                                                        {{-- <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id_produk }}">
                                                             <i class="ion ion-md-search me-2"></i> Detail
-                                                        </a>
+                                                        </a> --}}
                                                         <!-- Tombol Edit -->
                                                         <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalUpdateProduk{{ $item->id_produk }}">
                                                             <i class="fas fa-pen me-2"></i> Update

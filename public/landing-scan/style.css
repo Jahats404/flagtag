@@ -1,0 +1,127 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'DM Sans', sans-serif;
+    background: #ff7300 url('bg.png') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    text-align: center;
+}
+
+.container {
+    max-width: 500px;
+    width: 90%;
+    padding: 20px;
+}
+
+.logo {
+    margin-top: 40px;
+}
+
+.logo img {
+    width: 150px;
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 28px;
+    margin: 30px 0 10px 0;
+}
+
+p.subtitle {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
+
+.badge img {
+    width: 200px;
+    max-width: 80%;
+}
+
+.info {
+    background: white;
+    color: #ff7300;
+    padding: 10px;
+    margin: 30px 0;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.info-warning {
+    background: rgb(0, 0, 0);
+    color: #ffffff;
+    padding: 10px;
+    margin: 30px 0;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.contact {
+    font-size: 14px;
+    margin-bottom: 20px;
+    font-weight: normal;
+}
+
+.claim-button {
+    margin-top: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+.claim-button::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: linear-gradient(45deg, white, rgba(255, 255, 255, 0));
+    border-radius: 50%;
+    transform: translateX(-50%) translateY(0);
+    animation: verticalMove 2s ease-in-out infinite;
+    z-index: 0;
+    box-shadow: 0 0 10px white;
+}
+
+.claim-button a {
+    text-decoration: none;
+    background-color: #ffffff;
+    color: #ff7300;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    padding: 8px 20px;
+    font-size: 14px;
+    font-weight: bolder;
+    cursor: pointer;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes verticalMove {
+    0% {
+        transform: translateX(-50%) translateY(-20px);
+    }
+    50% {
+        transform: translateX(-50%) translateY(40px);
+    }
+    100% {
+        transform: translateX(-50%) translateY(-20px);
+    }
+}
+
+@media (min-width: 768px) {
+    h1 {
+        font-size: 36px;
+    }
+    p.subtitle {
+        font-size: 20px;
+    }
+    .contact {
+        font-size: 16px;
+    }
+}
