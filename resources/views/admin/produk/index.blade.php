@@ -12,83 +12,11 @@
         </nav>
     </div>
 
-    @include('assets.style-modal')
-
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
                     <h5 class="card-title mb-0">Data Produk</h5>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahProduk">
-                        Tambah Produk <i class="align-middle" data-feather="plus-circle"></i>
-                    </button>
-                </div>
-
-                {{-- MODAL TAMBAH PRODUK --}}
-                <div class="modal fade" id="modalTambahProduk" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Tambah Produk</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form action="{{ route('bo.produk.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="modal-body m-3">
-                                    <div class="mb-3">
-                                        <label class="form-label">NAMA PRODUK <span class="text-danger">*</span></label>
-                                        <input type="text" name="nama_produk" class="form-control @error('nama_produk') is-invalid @enderror" placeholder="Nama Produk" value="{{ old('nama_produk') }}">
-                                        @error('nama_produk')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">NOMOR SKU <span class="text-danger">*</span></label>
-                                        <input type="text" name="nomor_sku" class="form-control @error('nomor_sku') is-invalid @enderror" placeholder="SKU" value="{{ old('nomor_sku') }}">
-                                        @error('nomor_sku')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">KATEGORI PRODUK <span class="text-danger">*</span></label>
-                                        <select class="form-control select2kategoriProduk @error('kategori_produk') is-invalid @enderror" 
-                                            name="kategori_produk">
-                                            <option value="">-- PILIH KATEGORI --</option>
-                                            <option {{ old('kategori_produk') == 'Makanan' ? 'selected' : '' }} value="Makanan">Makanan</option>
-                                            <option {{ old('kategori_produk') == 'Herbal' ? 'selected' : '' }} value="Herbal">Herbal</option>
-                                            <option {{ old('kategori_produk') == 'Kebersihan' ? 'selected' : '' }} value="Kebersihan">Kebersihan</option>
-                                        </select>
-                                        @error('kategori_produk')
-                                            <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">KOMPOSISI <span class="text-danger">*</span></label>
-                                        <textarea name="komposisi_produk" class="form-control @error('komposisi_produk') is-invalid @enderror" id="komposisi_produk">{{ old('komposisi_produk') }}</textarea>
-                                        @error('komposisi_produk')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">DESKRIPSI</label>
-                                        <textarea name="deskripsi_produk" class="form-control @error('deskripsi_produk') is-invalid @enderror" id="deskripsi_produk">{{ old('deskripsi_produk') }}</textarea>
-                                        @error('deskripsi_produk')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
                 </div>
 
                 <div class="card-body">
@@ -98,6 +26,7 @@
                                 <th style="text-align: center;">NO</th>
                                 {{-- <th style="text-align: center;">ID PRODUK</th> --}}
                                 <th style="text-align: center;">NAMA PRODUK</th>
+                                <th style="text-align: center;">BRAND OWNER</th>
                                 <th style="text-align: center;">KATEGORI PRODUK</th>
                                 <th style="text-align: center;">NOMOR SKU</th>
                                 <th style="text-align: center;">KOMPOSISI</th>
@@ -111,6 +40,7 @@
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
                                     {{-- <td style="text-align: center;">{{ $item->id_produk ?? '-' }}</td> --}}
                                     <td style="text-align: center;">{{ $item->nama_produk ?? '-' }}</td>
+                                    <td style="text-align: center;">{{ $item->brandOwner->nama_perusahaan ?? '-' }}</td>
                                     <td style="text-align: center;">{{ $item->kategori_produk ?? '-' }}</td>
                                     <td style="text-align: center;">{{ $item->nomor_sku ?? '-' }}</td>
                                     <td style="text-align: center;">{{ $item->komposisi_produk ?? '-' }}</td>
@@ -125,19 +55,11 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <!-- Tombol Batch -->
-                                                        <a class="dropdown-item" href="{{ route('bo.batch', ['id' => encrypt_id($item->id_produk)]) }}">
+                                                        <a class="dropdown-item" href="{{ route('admin.batch', ['id' => encrypt_id($item->id_produk)]) }}">
                                                             <i class="ion ion-ios-filing me-2"></i> Batch
                                                         </a>
-                                                        <!-- Tombol Detail -->
-                                                        {{-- <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id_produk }}">
-                                                            <i class="ion ion-md-search me-2"></i> Detail
-                                                        </a> --}}
-                                                        <!-- Tombol Edit -->
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalUpdateProduk{{ $item->id_produk }}">
-                                                            <i class="fas fa-pen me-2"></i> Update
-                                                        </a>
                                                     </li>
-                                                    <li>
+                                                    {{-- <li>
                                                         <!-- Form Delete -->
                                                         <form action="{{ route('bo.produk.delete', ['id' => Crypt::encryptString($item->id_produk)]) }}" method="POST" class="delete-form d-inline">
                                                             @csrf
@@ -146,7 +68,7 @@
                                                                 <i class="fas fa-trash me-2"></i> Delete
                                                             </button>
                                                         </form>
-                                                    </li>
+                                                    </li> --}}
                                                 </ul>
                                             </div>
                                         </div>

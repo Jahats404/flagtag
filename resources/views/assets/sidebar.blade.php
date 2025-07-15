@@ -7,6 +7,53 @@
         </div>
 
         <ul class="sidebar-nav">
+
+            @if (Auth::check() && Auth::user()->role_id == '1')
+                <li class="sidebar-header">
+                    Admin
+                </li>
+                <li class="sidebar-item {{ Request::routeIs('admin.dashboard*') ? 'active' : '' }}">
+                    <a class="sidebar-link" href="{{ route('admin.dashboard') }}">
+                        <i class="align-middle me-2 fas fa-fw fa-home"></i> <span class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item {{ Request::routeIs('admin.users*') || Request::routeIs('admin.brandowner*') || Request::routeIs('admin.customer*') ? 'active' : '' }}">
+                    <a data-bs-target="#admin-akun" data-bs-toggle="collapse" class="sidebar-link">
+                        <i class="align-middle me-2 fas fa-fw fa-users-cog"></i> <span class="align-middle">Daftar Pengguna</span>
+                    </a>
+                    <ul id="admin-akun" class="sidebar-dropdown list-unstyled collapse {{ Request::routeIs('admin.users') ? 'show' : '' }}" data-bs-parent="#sidebar">
+                        <li class="sidebar-item {{ Request::routeIs('admin.users') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('admin.users') }}">User Setting</a>
+                        </li>
+                        <li class="sidebar-item {{ Request::routeIs('admin.brandowner') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('admin.brandowner') }}">Brand Owner</a>
+                        </li>
+                        <li class="sidebar-item {{ Request::routeIs('admin.customer') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('admin.customer') }}">Customer</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="sidebar-item {{ Request::routeIs('admin.produk*') || Request::routeIs('admin.produk*') || Request::routeIs('admin.kepemilikan.produk*') ? 'active' : '' }}">
+                    <a data-bs-target="#admin-produks" data-bs-toggle="collapse" class="sidebar-link">
+                        <i class="align-middle me-2" data-feather="box"></i> <span class="align-middle">Produk</span>
+                    </a>
+                    <ul id="admin-produks" class="sidebar-dropdown list-unstyled collapse {{ Request::routeIs('admin.produk') ? 'show' : '' }}" data-bs-parent="#sidebar">
+                        <li class="sidebar-item {{ Request::routeIs('admin.produk') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('admin.produk') }}">Data Produk</a>
+                        </li>
+                        <li class="sidebar-item {{ Request::routeIs('admin.kepemilikan.produk') ? 'active' : '' }}">
+                            <a class="sidebar-link" href="{{ route('admin.kepemilikan.produk') }}">Kepemilikan Produk</a>
+                        </li>
+                    </ul>
+                </li>
+
+
+            @endif
+
+
+
             @if (Auth::check() && Auth::user()->role_id == '2')
                 
             <li class="sidebar-header">
@@ -179,7 +226,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="sidebar-item {{ Request::routeIs('bo.produk*') || Request::routeIs('bo.produk*') ? 'active' : '' }}">
+                {{-- <li class="sidebar-item {{ Request::routeIs('bo.produk*') || Request::routeIs('bo.produk*') ? 'active' : '' }}">
                     <a data-bs-target="#produks" data-bs-toggle="collapse" class="sidebar-link">
                         <i class="align-middle me-2" data-feather="box"></i> <span class="align-middle">Produk</span>
                     </a>
@@ -190,11 +237,11 @@
                         <li class="sidebar-item {{ Request::routeIs('kepemilikan.produk') ? 'active' : '' }}">
                             <a class="sidebar-link" href="{{ route('kepemilikan.produk') }}">Kepemilikan Produk</a>
                         </li>
-                    </ul>
+                    </ul> --}}
                 </li>
             @endif
 
-            <li class="sidebar-header">
+            {{-- <li class="sidebar-header">
                 Customer
             </li>
                 
@@ -202,7 +249,7 @@
                 <a class="sidebar-link" href="{{ route('data.riwayat') }}">
                     <i class="ion ion-ios-bookmark me-2"></i> <span class="align-middle">Riwayat</span>
                 </a>
-            </li>
+            </li> --}}
 
             {{-- <li class="sidebar-item {{ Request::routeIs('bitcoin*') || Request::routeIs('bitcoin*') ? 'active' : '' }}">
                 <a data-bs-target="#distributor" data-bs-toggle="collapse" class="sidebar-link">

@@ -23,7 +23,6 @@
                 </div>
 
                 {{-- MODAL TAMBAH PRODUK --}}
-                
                 <div class="modal fade" id="modalTambahBatch" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -135,21 +134,20 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <!-- Tombol Detail -->
-                                                        <a class="dropdown-item" href="{{ route('bo.batch.detail', ['id' => encrypt_id($item->id_batch_produk)]) }}">
-                                                            <i class="ion ion-md-search me-2"></i> Detail
-                                                        </a>
-                                                        <!-- Tombol Edit -->
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalUpdateBatch{{ $item->id_batch_produk }}">
-                                                            <i class="fas fa-pen me-2"></i> Update
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <!-- Form Delete -->
-                                                        <form action="{{ route('bo.batch.delete', ['id' => Crypt::encryptString($item->id_batch_produk)]) }}" method="POST" class="delete-form d-inline">
+                                                        <form action="{{ route('admin.batch.status', ['id' => encrypt_id($item->id_batch_produk)]) }}" method="post">
                                                             @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item text-danger delete-btn">
-                                                                <i class="fas fa-trash me-2"></i> Delete
+                                                            <input type="hidden" name="status" value="Accept">
+                                                            <button type="submit" class="dropdown-item">
+                                                                <i class="ion ion-ios-checkmark-circle-outline me-2"></i> Accept
+                                                            </button>
+                                                        </form>
+
+                                                        <!-- Tombol Edit -->
+                                                        <form action="{{ route('admin.batch.status', ['id' => encrypt_id($item->id_batch_produk)]) }}" method="post">
+                                                            @csrf
+                                                            <input type="hidden" name="status" value="Decline">
+                                                            <button type="submit" class="dropdown-item">
+                                                                <i class="ion ion-ios-close-circle-outline me-2"></i> Decline
                                                             </button>
                                                         </form>
                                                     </li>

@@ -5,13 +5,14 @@ namespace App\Http\Controllers\produk;
 use App\Http\Controllers\Controller;
 use App\Models\Produk;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 
 class BoProdukController extends Controller
 {
     public function index()
     {
-        $produk = Produk::all();
+        $produk = Produk::where('perusahaan_id', Auth::user()->brandOwner->id_perusahaan)->get();
 
         return view('bo.produk.index', compact('produk'));
     }
@@ -42,6 +43,7 @@ class BoProdukController extends Controller
             'kategori_produk' => $request->kategori_produk,
             'komposisi_produk' => $request->komposisi_produk,
             'deskripsi_produk' => $request->deskripsi_produk,
+            'perusahaan_id' => Auth::user()->brandOwner->id_perusahaan,
         ]);
         
 

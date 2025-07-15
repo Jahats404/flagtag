@@ -16017,7 +16017,8 @@ a.sidebar-link svg {
 }
 
 .splash .splash-icon {
-    background: #28304e;
+    background: linear-gradient(90deg, #ff7a00, #ed5205);
+    /* background: #28304e; */
     display: block;
     height: 100%;
     pointer-events: none;
@@ -16510,7 +16511,9 @@ pre.snippet {
 }
 
 .wrapper:before {
-    background: #28304e;
+    /* background: #28304e; */
+    background: linear-gradient(90deg, #ff7a00, #ed5205);
+    /* gradient orange */
     content: " ";
     height: 264px;
     left: 0;

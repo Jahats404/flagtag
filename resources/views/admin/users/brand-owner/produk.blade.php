@@ -2,12 +2,12 @@
 @section('content')
     <div class="header">
         <h1 class="header-title">
-            Batch Produk <span class="text-uppercase">{{ $produk->nama_produk }}</span>
+            Produk <span class="text-uppercase">{{ $brandOwner->nama_perusahaan }}</span>
         </h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('bo.produk') }}">Data Produk</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Batch Produk</li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.brandowner') }}">Data Brand Owner</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{ $brandOwner->nama_perusahaan }}</li>
             </ol>
         </nav>
     </div>
@@ -16,80 +16,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="card-title mb-0">{{ $produk->nama_produk }}</h5>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahBatch">
-                        Tambah Batch <i class="align-middle" data-feather="plus-circle"></i>
-                    </button>
-                </div>
-
-                {{-- MODAL TAMBAH PRODUK --}}
-                
-                <div class="modal fade" id="modalTambahBatch" tabindex="-1" role="dialog" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title"><i class="bi bi-box-seam me-2"></i>Tambah Batch Produk</h5>
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form action="{{ route('bo.batch.store') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <input type="hidden" name="produk_id" value="{{ $produk->id_produk }}">
-                                <div class="modal-body">
-                                    <div class="mb-3">
-                                        <label class="form-label">No Batch Produk <span class="text-danger">*</span></label>
-                                        <input type="text" name="no_batch_produk" class="form-control @error('no_batch_produk') is-invalid @enderror" placeholder="Masukkan no batch produk" value="{{ old('no_batch_produk') }}">
-                                        @error('no_batch_produk')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Tanggal Produksi <span class="text-danger">*</span></label>
-                                        <input type="date" name="tanggal_produksi" class="form-control @error('tanggal_produksi') is-invalid @enderror" value="{{ old('tanggal_produksi') }}">
-                                        @error('tanggal_produksi')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Tanggal Kadaluarsa <span class="text-danger">*</span></label>
-                                        <input type="date" name="tanggal_kadaluarsa" class="form-control @error('tanggal_kadaluarsa') is-invalid @enderror" value="{{ old('tanggal_kadaluarsa') }}">
-                                        @error('tanggal_kadaluarsa')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Tempat Produksi <span class="text-danger">*</span></label>
-                                        <input type="text" name="tempat_produksi" class="form-control @error('tempat_produksi') is-invalid @enderror" placeholder="Masukkan lokasi produksi" value="{{ old('tempat_produksi') }}">
-                                        @error('tempat_produksi')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">Jumlah Produk (Quantity) <span class="text-danger">*</span></label>
-                                        <input type="number" name="quantity" class="form-control @error('quantity') is-invalid @enderror" placeholder="Masukkan jumlah produk" value="{{ old('quantity') }}">
-                                        @error('quantity')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Nominal Token</label>
-                                        <input type="number" name="nominal_token" class="form-control @error('nominal_token') is-invalid @enderror" placeholder="Masukkan jumlah produk" value="{{ old('nominal_token') }}">
-                                        @error('nominal_token')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                                    <button type="submit" class="btn btn-primary">Simpan</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
+                    <h5 class="card-title mb-0">{{$brandOwner->nama_perusahaan }}</h5>
                 </div>
 
 
@@ -98,65 +25,25 @@
                         <thead>
                             <tr>
                                 <th style="text-align: center;">NO</th>
-                                <th style="text-align: center;">NO BATCH</th>
-                                <th style="text-align: center;">TGL PRODUKSI</th>
-                                <th style="text-align: center;">TGL KADALUARSA</th>
-                                <th style="text-align: center;">TEMPAT PRODUKSI</th>
-                                <th style="text-align: center;">QUANTITY</th>
-                                <th style="text-align: center;">STATUS</th>
-                                <th style="text-align: center;">AKSI</th>
+                                <th style="text-align: center;">NAMA PRODUK</th>
+                                <th style="text-align: center;">BRAND OWNER</th>
+                                <th style="text-align: center;">KATEGORI PRODUK</th>
+                                <th style="text-align: center;">NOMOR SKU</th>
+                                <th style="text-align: center;">KOMPOSISI</th>
+                                <th style="text-align: center;">DESKRIPSI</th>
+                                {{-- <th style="text-align: center;">AKSI</th> --}}
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($batchProduk as $item)
+                            @foreach ($produk as $item)
                                 <tr>
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                    <td style="text-align: center;">{{ $item->no_batch_produk ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->tanggal_produksi ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->tanggal_kadaluarsa ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->tempat_produksi ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->quantity ?? '-' }}</td>
-                                    <td style="text-align: center;">
-                                        @if ($item->status == 'Accept')
-                                            <span class="badge bg-success">{{ $item->status }}</span>
-                                        @elseif ($item->status == 'Pending')
-                                            <span class="badge bg-info">{{ $item->status }}</span>
-                                        @else
-                                            <span class="badge bg-danger">{{ $item->status }}</span>
-                                        @endif
-                                    </td>
-                                    {{-- <td style="text-align: center;">{{ number_format($item->total, 0, ',', '.') }}</td> --}}
-                                    <td style="text-align: center;">
-                                        <div class="d-flex justify-content-center gap-2">
-                                            <div class="dropdown">
-                                                <a href="#" class="text-body" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <i class="align-middle me-2" data-feather="more-vertical"></i>
-                                                </a>
-                                                <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li>
-                                                        <!-- Tombol Detail -->
-                                                        <a class="dropdown-item" href="{{ route('bo.batch.detail', ['id' => encrypt_id($item->id_batch_produk)]) }}">
-                                                            <i class="ion ion-md-search me-2"></i> Detail
-                                                        </a>
-                                                        <!-- Tombol Edit -->
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalUpdateBatch{{ $item->id_batch_produk }}">
-                                                            <i class="fas fa-pen me-2"></i> Update
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <!-- Form Delete -->
-                                                        <form action="{{ route('bo.batch.delete', ['id' => Crypt::encryptString($item->id_batch_produk)]) }}" method="POST" class="delete-form d-inline">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="dropdown-item text-danger delete-btn">
-                                                                <i class="fas fa-trash me-2"></i> Delete
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </td>
+                                    <td style="text-align: center;">{{ $item->nama_produk ?? '-' }}</td>
+                                    <td style="text-align: center;">{{ $item->brandOwner->nama_perusahaan ?? '-' }}</td>
+                                    <td style="text-align: center;">{{ $item->kategori_produk ?? '-' }}</td>
+                                    <td style="text-align: center;">{{ $item->nomor_sku ?? '-' }}</td>
+                                    <td style="text-align: center;">{{ $item->komposisi_produk ?? '-' }}</td>
+                                    <td style="text-align: center;">{{ $item->deskripsi_produk ?? '-' }}</td>
                                 </tr>
 
                                 {{-- MODAL UPDATE PRODUK --}}

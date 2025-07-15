@@ -13,6 +13,78 @@
     </nav>
 </div>
 
+@if ($hologram)
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            @if ($hologram->customer_claim_id || $hologram->status_token == 'Claimed')
+                Swal.fire({
+                    title: 'Token Sudah Diklaim',
+                    text: 'Token ini sudah pernah diklaim sebelumnya. Anda tidak dapat melakukan klaim ulang.',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    customClass: {
+                        popup: 'swal2-rounded swal2-shadow'
+                    }
+                });
+            @elseif ($hologram->status_token == 'Active')
+                Swal.fire({
+                    title: 'Klaim Token Anda',
+                    html: `
+                        <p>Selamat! Anda berhak mendapatkan token dari produk:</p>
+                        <h4 class="text-primary">{{ $hologram->batchProduk->produk->nama_produk }}</h4>
+                        <p>Silakan tekan tombol di bawah untuk klaim token Anda.</p>
+                    `,
+                    icon: 'success',
+                    showCancelButton: true,
+                    confirmButtonText: '<i class="fas fa-check-circle"></i> Klaim Token Sekarang',
+                    cancelButtonText: 'Batal',
+                    customClass: {
+                        popup: 'swal2-rounded swal2-shadow'
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch("{{ route('c.token.claim', ['kode' => encrypt_id($hologram->kode_hologram)]) }}", {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json",
+                                "X-CSRF-TOKEN": "{{ csrf_token() }}"
+                            },
+                            body: JSON.stringify({})
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire({
+                                    title: 'Berhasil!',
+                                    text: data.message,
+                                    icon: 'success'
+                                }).then(() => {
+                                    window.location.reload();
+                                });
+                            } else {
+                                Swal.fire({
+                                    title: 'Gagal!',
+                                    text: data.message,
+                                    icon: 'error'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error(error);
+                            Swal.fire({
+                                title: 'Terjadi Kesalahan',
+                                text: 'Silakan coba lagi.',
+                                icon: 'error'
+                            });
+                        });
+                    }
+                });
+            @endif
+        });
+    </script>
+@endif
+
+
 
 
 <div class="row">

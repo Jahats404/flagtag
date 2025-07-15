@@ -12,6 +12,7 @@
 <title>FLAGSHIIIP</title>
 
 	@include('assets.css')
+	@include('assets.style-modal')
 	<!-- END SETTINGS -->
 </head>
 

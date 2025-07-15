@@ -2,82 +2,92 @@
 @section('content')
     <div class="header">
         <h1 class="header-title">
-            Produk
+            
         </h1>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="">Data Produk</a></li>
+                <li class="breadcrumb-item"><a href="">Data Akun</a></li>
                 {{-- <li class="breadcrumb-item active" aria-current="page">Playlist</li> --}}
             </ol>
         </nav>
     </div>
 
-    @include('assets.style-modal')
-
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex align-items-center justify-content-between">
-                    <h5 class="card-title mb-0">Data Produk</h5>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahProduk">
-                        Tambah Produk <i class="align-middle" data-feather="plus-circle"></i>
+                    <h5 class="card-title mb-0">Data Akun</h5>
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#modalTambahAkun">
+                        Tambah Akun <i class="align-middle" data-feather="plus-circle"></i>
                     </button>
                 </div>
 
-                {{-- MODAL TAMBAH PRODUK --}}
-                <div class="modal fade" id="modalTambahProduk" tabindex="-1" role="dialog" aria-hidden="true">
+                {{-- MODAL TAMBAH AKUN --}}
+                <div class="modal fade" id="modalTambahAkun" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Tambah Produk</h5>
+                                <h5 class="modal-title">Tambah Akun</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form action="{{ route('bo.produk.store') }}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="modal-body m-3">
                                     <div class="mb-3">
-                                        <label class="form-label">NAMA PRODUK <span class="text-danger">*</span></label>
-                                        <input type="text" name="nama_produk" class="form-control @error('nama_produk') is-invalid @enderror" placeholder="Nama Produk" value="{{ old('nama_produk') }}">
-                                        @error('nama_produk')
+                                        <label class="form-label">Nama Perusahaan/Customer <span class="text-danger">*</span></label>
+                                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" placeholder="Nama Perusahaan/Customer" value="{{ old('nama') }}">
+                                        @error('nama')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Email --}}
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                        <input type="email" name="email" id="email"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            value="{{ old('email') }}" placeholder="Masukkan email" required>
+                                        @error('email')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Password --}}
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
+                                        <input type="password" name="password" id="password"
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            placeholder="Masukkan password" required>
+                                        @error('password')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    {{-- Konfirmasi Password --}}
+                                    <div class="mb-3">
+                                        <label for="password_confirmation" class="form-label">Konfirmasi Password <span class="text-danger">*</span></label>
+                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                                            placeholder="Ulangi password" required>
+                                        @error('password_confirmation')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
 
                                     <div class="mb-3">
-                                        <label class="form-label">NOMOR SKU <span class="text-danger">*</span></label>
-                                        <input type="text" name="nomor_sku" class="form-control @error('nomor_sku') is-invalid @enderror" placeholder="SKU" value="{{ old('nomor_sku') }}">
-                                        @error('nomor_sku')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    
-                                    <div class="mb-3">
-                                        <label class="form-label">KATEGORI PRODUK <span class="text-danger">*</span></label>
-                                        <select class="form-control select2kategoriProduk @error('kategori_produk') is-invalid @enderror" 
-                                            name="kategori_produk">
-                                            <option value="">-- PILIH KATEGORI --</option>
-                                            <option {{ old('kategori_produk') == 'Makanan' ? 'selected' : '' }} value="Makanan">Makanan</option>
-                                            <option {{ old('kategori_produk') == 'Herbal' ? 'selected' : '' }} value="Herbal">Herbal</option>
-                                            <option {{ old('kategori_produk') == 'Kebersihan' ? 'selected' : '' }} value="Kebersihan">Kebersihan</option>
+                                        <label class="form-label">Role <span class="text-danger">*</span></label>
+                                        <select class="form-control select2Role @error('role_id') is-invalid @enderror" 
+                                            name="role_id">
+                                            <option value="">-- Pilih Role --</option>
+                                            @foreach ($roles as $role)
+                                                <option value="{{ $role->id_role }}" 
+                                                    {{ old('role_id') == $role->id_role ? 'selected' : '' }}>
+                                                    {{ $role->level }}
+                                                </option>
+                                            @endforeach
                                         </select>
-                                        @error('kategori_produk')
+                                        @error('role_id')
                                             <span class="invalid-feedback d-block">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">KOMPOSISI <span class="text-danger">*</span></label>
-                                        <textarea name="komposisi_produk" class="form-control @error('komposisi_produk') is-invalid @enderror" id="komposisi_produk">{{ old('komposisi_produk') }}</textarea>
-                                        @error('komposisi_produk')
-                                            <div class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-
-                                    <div class="mb-3">
-                                        <label class="form-label">DESKRIPSI</label>
-                                        <textarea name="deskripsi_produk" class="form-control @error('deskripsi_produk') is-invalid @enderror" id="deskripsi_produk">{{ old('deskripsi_produk') }}</textarea>
-                                        @error('deskripsi_produk')
-                                            <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
                                     </div>
                 
@@ -97,25 +107,29 @@
                             <tr>
                                 <th style="text-align: center;">NO</th>
                                 {{-- <th style="text-align: center;">ID PRODUK</th> --}}
-                                <th style="text-align: center;">NAMA PRODUK</th>
-                                <th style="text-align: center;">KATEGORI PRODUK</th>
-                                <th style="text-align: center;">NOMOR SKU</th>
-                                <th style="text-align: center;">KOMPOSISI</th>
-                                <th style="text-align: center;">DESKRIPSI</th>
+                                <th style="text-align: center;">NAMA</th>
+                                <th style="text-align: center;">EMAIL</th>
+                                <th style="text-align: center;">ROLE</th>
                                 <th style="text-align: center;">AKSI</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($produk as $item)
+                            @foreach ($users as $item)
                                 <tr>
                                     <td style="text-align: center;">{{ $loop->iteration }}</td>
-                                    {{-- <td style="text-align: center;">{{ $item->id_produk ?? '-' }}</td> --}}
-                                    <td style="text-align: center;">{{ $item->nama_produk ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->kategori_produk ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->nomor_sku ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->komposisi_produk ?? '-' }}</td>
-                                    <td style="text-align: center;">{{ $item->deskripsi_produk ?? '-' }}</td>
-                                    {{-- <td style="text-align: center;">{{ number_format($item->total, 0, ',', '.') }}</td> --}}
+                                    <td style="text-align: center;">{{ $item->brandOwner ? $item->brandOwner->nama_perusahaan : $item->customer->nama_lengkap ?? '-' }}</td>
+                                    <td style="text-align: center;">{{ $item->email ?? '-' }}</td>
+                                    <td style="text-align: center;">
+                                        @if ($item->role->level == 'Admin')
+                                            <span class="badge bg-primary">{{ $item->role->level}}</span>
+                                        @elseif ($item->role->level == 'Brand Owner')
+                                            <span class="badge" style="background-color: #22cb1d;">{{ $item->role->level}}</span>
+                                        @elseif ($item->role->level == 'Customer')
+                                            <span class="badge bg-info">{{ $item->role->level}}</span>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
                                     <td style="text-align: center;">
                                         <div class="d-flex justify-content-center gap-2">
                                             <div class="dropdown">
@@ -124,22 +138,14 @@
                                                 </a>
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
-                                                        <!-- Tombol Batch -->
-                                                        <a class="dropdown-item" href="{{ route('bo.batch', ['id' => encrypt_id($item->id_produk)]) }}">
-                                                            <i class="ion ion-ios-filing me-2"></i> Batch
-                                                        </a>
-                                                        <!-- Tombol Detail -->
-                                                        {{-- <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalDetail{{ $item->id_produk }}">
-                                                            <i class="ion ion-md-search me-2"></i> Detail
-                                                        </a> --}}
                                                         <!-- Tombol Edit -->
-                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalUpdateProduk{{ $item->id_produk }}">
+                                                        <a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modalUpdateUsers{{ $item->id }}">
                                                             <i class="fas fa-pen me-2"></i> Update
                                                         </a>
                                                     </li>
                                                     <li>
                                                         <!-- Form Delete -->
-                                                        <form action="{{ route('bo.produk.delete', ['id' => Crypt::encryptString($item->id_produk)]) }}" method="POST" class="delete-form d-inline">
+                                                        <form action="{{ route('admin.users.delete', ['id' => Crypt::encryptString($item->id)]) }}" method="POST" class="delete-form d-inline">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="dropdown-item text-danger delete-btn">
@@ -154,60 +160,73 @@
                                 </tr>
 
                                 {{-- MODAL UPDATE PRODUK --}}
-                                <div class="modal fade" id="modalUpdateProduk{{ $item->id_produk }}" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal fade" id="modalUpdateUsers{{ $item->id }}" tabindex="-1" role="dialog" aria-hidden="true">
                                     <div class="modal-dialog modal-lg" role="document">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title">Perbarui Produk <strong>#{{ $item->id_produk }}</strong></h5>
+                                                <h5 class="modal-title">Perbarui Akun</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-                                            <form action="{{ route('bo.produk.update', ['id' => Crypt::encryptString($item->id_produk)]) }}" method="POST" enctype="multipart/form-data">
+                                            <form action="{{ route('admin.users.update', ['id' => Crypt::encryptString($item->id)]) }}" method="POST" enctype="multipart/form-data">
                                                 @csrf
                                                 @method('PUT')
                                                 <div class="modal-body m-3">
                                                     <div class="mb-3">
-                                                        <label class="form-label">NAMA PRODUK <span class="text-danger">*</span></label>
-                                                        <input type="text" name="nama_produk" class="form-control @error('nama_produk') is-invalid @enderror" placeholder="Nama Produk" value="{{ old('nama_produk',$item->nama_produk) }}">
-                                                        @error('nama_produk')
+                                                        <label class="form-label">Nama Perusahaan/Customer <span class="text-danger">*</span></label>
+                                                        <input type="text" name="nama" class="form-control @error('nama') is-invalid @enderror" placeholder="Nama Perusahaan/Customer" 
+                                                            value="{{ old('nama',optional($item->brandOwner)->nama_perusahaan ?? optional($item->customer)->nama_lengkap ?? '') }}">
+                                                        @error('nama')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                    {{-- Email --}}
+                                                    <div class="mb-3">
+                                                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                                                        <input type="email" name="email" id="email"
+                                                            class="form-control @error('email') is-invalid @enderror"
+                                                            value="{{ old('email',$item->email) }}" placeholder="Masukkan email" required>
+                                                        @error('email')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                    {{-- Password --}}
+                                                    <div class="mb-3">
+                                                        <label for="password" class="form-label">Password</label>
+                                                        <input type="password" name="password" id="password"
+                                                            class="form-control @error('password') is-invalid @enderror"
+                                                            placeholder="Masukkan password">
+                                                        @error('password')
+                                                            <div class="invalid-feedback">{{ $message }}</div>
+                                                        @enderror
+                                                    </div>
+
+                                                    {{-- Konfirmasi Password --}}
+                                                    <div class="mb-3">
+                                                        <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
+                                                        <input type="password" name="password_confirmation" id="password_confirmation"
+                                                            class="form-control @error('password_confirmation') is-invalid @enderror"
+                                                            placeholder="Ulangi password">
+                                                        @error('password_confirmation')
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
 
                                                     <div class="mb-3">
-                                                        <label class="form-label">NOMOR SKU <span class="text-danger">*</span></label>
-                                                        <input type="text" name="nomor_sku" class="form-control @error('nomor_sku') is-invalid @enderror" placeholder="SKU" value="{{ old('nomor_sku',$item->nomor_sku) }}">
-                                                        @error('nomor_sku')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-                                                    
-                                                    <div class="mb-3">
-                                                        <label class="form-label">KATEGORI PRODUK <span class="text-danger">*</span></label>
-                                                        <select class="form-control select2kategoriProdukUpdate @error('kategori_produk') is-invalid @enderror" 
-                                                            name="kategori_produk">
-                                                            <option value="">-- PILIH KATEGORI --</option>
-                                                            <option {{ old('kategori_produk',$item->kategori_produk) == 'Makanan' ? 'selected' : '' }} value="Makanan">Makanan</option>
-                                                            <option {{ old('kategori_produk',$item->kategori_produk) == 'Herbal' ? 'selected' : '' }} value="Herbal">Herbal</option>
-                                                            <option {{ old('kategori_produk',$item->kategori_produk) == 'Kebersihan' ? 'selected' : '' }} value="Kebersihan">Kebersihan</option>
+                                                        <label class="form-label">Role <span class="text-danger">*</span></label>
+                                                        <select class="form-control select2RoleUpdate @error('role_id') is-invalid @enderror" 
+                                                            name="role_id">
+                                                            <option value="">-- Pilih Role --</option>
+                                                            @foreach ($roles as $role)
+                                                                <option value="{{ $role->id_role }}" 
+                                                                    {{ old('role_id',$item->role_id) == $role->id_role ? 'selected' : '' }}>
+                                                                    {{ $role->level }}
+                                                                </option>
+                                                            @endforeach
                                                         </select>
-                                                        @error('kategori_produk')
+                                                        @error('role_id')
                                                             <span class="invalid-feedback d-block">{{ $message }}</span>
-                                                        @enderror
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label class="form-label">KOMPOSISI <span class="text-danger">*</span></label>
-                                                        <textarea name="komposisi_produk" class="form-control @error('komposisi_produk') is-invalid @enderror" id="komposisi_produk">{{ old('komposisi_produk',$item->komposisi_produk) }}</textarea>
-                                                        @error('komposisi_produk')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
-                                                        @enderror
-                                                    </div>
-
-                                                    <div class="mb-3">
-                                                        <label class="form-label">DESKRIPSI</label>
-                                                        <textarea name="deskripsi_produk" class="form-control @error('deskripsi_produk') is-invalid @enderror" id="deskripsi_produk">{{ old('deskripsi_produk',$item->deskripsi_produk) }}</textarea>
-                                                        @error('deskripsi_produk')
-                                                            <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </div>
                                 
@@ -288,31 +307,32 @@
 	</script>
 
 
-    {{-- SCRIPT SELECT2 --}}
+    {{-- SCRIPT SELECT 2 --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Inisialisasi Select2
-            $(".select2kategoriProduk").each(function() {
+            $(".select2Role").each(function() {
                 $(this)
                     .wrap("<div class=\"position-relative\"></div>")
                     .select2({
-                        placeholder: "-- Pilih Kategori --",
+                        placeholder: "-- Pilih Role --",
                         dropdownParent: $(this).parent()
                     });
             });
 
             // Jika ada error Laravel, tambahkan class is-invalid ke Select2
-            if ($(".select2kategoriProduk").hasClass("is-invalid")) {
-                $(".select2kategoriProduk").next('.select2-container').addClass("is-invalid");
+            if ($(".select2Role").hasClass("is-invalid")) {
+                $(".select2Role").next('.select2-container').addClass("is-invalid");
             }
         });
     </script>
 
+    {{-- SCRIPT SELECT 2 UPDATE --}}
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Inisialisasi Select2 setiap kali modal dibuka
-            $('div[id^="modalUpdateProduk"]').on('shown.bs.modal', function () {
-                $(this).find('.select2kategoriProdukUpdate').each(function () {
+            $('div[id^="modalUpdateUsers"]').on('shown.bs.modal', function () {
+                $(this).find('.select2RoleUpdate').each(function () {
                     if (!$(this).hasClass('select2-hidden-accessible')) {
                         $(this).select2({
                             dropdownParent: $(this).closest(".modal"),
@@ -324,7 +344,7 @@
             });
 
             // Simpan nilai Select2 ke input hidden sebelum submit
-            $(".select2kategoriProdukUpdate").on("change", function() {
+            $(".select2RoleUpdate").on("change", function() {
                 let hiddenField = $(this).data("hidden-id");
                 $("#" + hiddenField).val($(this).val());
             });

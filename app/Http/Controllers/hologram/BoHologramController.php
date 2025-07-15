@@ -67,6 +67,7 @@ class BoHologramController extends Controller
 
     //     return response()->json(['message' => 'Lokasi berhasil disimpan']);
     // }
+    
     public function simpanLokasi(Request $request)
     {
         // Validasi request

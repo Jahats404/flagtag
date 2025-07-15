@@ -77,11 +77,11 @@
 							</div>
 
 							<div class="d-flex justify-content-between align-items-center mb-3">
-								<small>
+								{{-- <small>
 									<a href="#">Forgot password?</a>
-								</small>
+								</small> --}}
 								<small>
-									Don't have an account? <a href="{{ route('register.one') }}">Register here</a>
+									Don't have an account? <a href="{{ route('register.customer', ['kode' => $kode]) }}">Register here</a>
 								</small>
 							</div>
 

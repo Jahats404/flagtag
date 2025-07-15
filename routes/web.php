@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\batch\AdminBatchController;
 use App\Http\Controllers\batch\BoBatchController;
 use App\Http\Controllers\dashboard\AdminDashboardController;
 use App\Http\Controllers\dashboard\BoDashboardController;
@@ -8,8 +9,12 @@ use App\Http\Controllers\dashboard\CustomerDashboardController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\hologram\BoHologramController;
 use App\Http\Controllers\PricingController;
+use App\Http\Controllers\produk\AdminProdukController;
 use App\Http\Controllers\produk\BoProdukController;
 use App\Http\Controllers\token\CustomerTokenController;
+use App\Http\Controllers\users\AdminBrandOwnerController;
+use App\Http\Controllers\users\AdminCustomerController;
+use App\Http\Controllers\users\AdminUserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -53,8 +58,14 @@ Route::post('/logout', [AuthController::class,'logout'])->name('logout');
 
 // LOGIN CUSTOMER
 Route::get('/check-session/{kode}', [AuthController::class,'cekLogin'])->name('cek.session');
+
 Route::get('/login-customer/{kode}', [AuthController::class,'loginCustomer'])->name('login.customer');
 Route::post('/authenticate-customer/{kode}', [AuthController::class,'authenticateCustomer'])->name('authenticate.customer');
+
+// REGISTER CUSTOMER
+Route::get('/register-customer/{kode}', [AuthController::class,'registerCustomer'])->name('register.customer');
+Route::post('/action-register-customer/{kode}', [AuthController::class,'actionRegisterCustomer'])->name('action.register.customer');
+
 
 // HOLOGRAM
 Route::get('/verifikasi/{kode}', [BoHologramController::class, 'verifikasi'])->name('hologram.verify');
@@ -67,6 +78,31 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('admin')->name('admin.')->middleware('CekUserLogin:1')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        // USERS
+        Route::get('/users', [AdminUserController::class, 'index'])->name('users');
+        Route::post('/users/store', [AdminUserController::class, 'store'])->name('users.store');
+        Route::put('/users/update/{id}', [AdminUserController::class, 'update'])->name('users.update');
+        Route::delete('/users/delete/{id}', [AdminUserController::class, 'delete'])->name('users.delete');
+
+        // BRAND OWNER
+        Route::get('/brand-owner', [AdminBrandOwnerController::class, 'index'])->name('brandowner');
+        Route::put('/brand-owner/update/{id}', [AdminBrandOwnerController::class, 'update'])->name('brandowner.update');
+
+        Route::get('/brand-owner/produk/{id}', [AdminProdukController::class, 'produk'])->name('brandowner.produk');
+
+        // CUSTOMER
+        Route::get('/customer', [AdminCustomerController::class, 'index'])->name('customer');
+        Route::put('/customer/update/{id}', [AdminCustomerController::class, 'update'])->name('customer.update');
+
+        // PRODUK
+        Route::get('/produk/all', [AdminProdukController::class, 'index'])->name('produk');
+        Route::get('/produk/kepemilikan-produk', [AdminProdukController::class, 'kepemilikanProduk'])->name('kepemilikan.produk');
+
+        // BATCH PRODUK
+        Route::get('/batch-produk/{id}', [AdminBatchController::class, 'index'])->name('batch');
+        Route::post('/batch-produk/status/{id}', [AdminBatchController::class, 'updateStatus'])->name('batch.status');
+
     });
     
 

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('hologram', function (Blueprint $table) {
             $table->string('id_hologram')->primary()->unique();
             $table->string('kode_hologram');
-            $table->text('hologram_image')->nullable();
+            $table->text('ipfs_url')->nullable();
             $table->string('status')->default('Inactive'); // 'active', 'inactive', 'claimed'
             $table->string('status_token')->nullable(); // 'active', 'inactive', 'claimed'
             $table->text('lokasi_scan')->nullable();

@@ -48,7 +48,7 @@ class CustomerTokenController extends Controller
                 ->where('hologram.customer_claim_id', $customer->id_customer)
                 ->sum('batch_produk.nominal_token');
 
-        return view('customer.token.index', compact('customer', 'riwayatScan', 'totalToken','hologram'));
+        return view('customer.token.index-with-code', compact('customer', 'riwayatScan', 'totalToken','hologram'));
 
     }
 
@@ -99,8 +99,8 @@ class CustomerTokenController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Token berhasil diklaim.' . $hologram->kode_hologram,
-                'redirect_url' => route('c.token.with.kode', ['kode' => encrypt_id($hologram->kode_hologram)]),
+                'message' => 'Token berhasil diklaim.',
+                'redirect_url' => route('c.token'),
             ]);
         } catch (\Exception $e) {
             return response()->json([
